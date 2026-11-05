@@ -1,5 +1,9 @@
-# Prerequisites
-*.d
+# IDE files (JetBrains & Visual Studio)
+.idea/
+.vs/
+
+# macOS system files
+.DS_Store
 
 # Compiled Object files
 *.slo
@@ -23,10 +27,6 @@
 *.dll
 *.so.*
 
-# Fortran module files
-*.mod
-*.smod
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -42,6 +42,9 @@
 build/
 Build/
 build-*/
+cmake-build-debug/
+cmake-build-release/
+cmake-build-*/
 
 # CMake generated files
 CMakeFiles/
@@ -59,9 +62,6 @@ compile_commands.json
 
 # vcpkg
 vcpkg_installed/
-
-# debug information files
-*.dwo
 
 # test output & cache
 Testing/
