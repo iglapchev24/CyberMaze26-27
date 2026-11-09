@@ -7,4 +7,4 @@ add_executable(PresentationLayer
         Presentation.cpp
 )
 
-target_link_libraries(PresentationLayer PRIVATE ApplicationLayer DataLayer)
+target_link_libraries(PresentationLayer PRIVATE ApplicationLayer DataLayer imgui)
