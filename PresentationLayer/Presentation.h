@@ -1,13 +1,21 @@
-//
-// Created by Vanko Lapchev on 5.11.26.
-//
+#pragma once
+#include <GLFW/glfw3.h>
+#include "../ApplicationLayer/Application.h"
 
-#ifndef CYBERMAZE26_27_PRESENTATION_H
-#define CYBERMAZE26_27_PRESENTATION_H
+class ApplicationWindow {
+private:
+    GLFWwindow* window = nullptr;
+    GameEngine gameEngine;
 
+    bool initializeWindow();
+    void initializeImGui();
+    void renderGui();
+    void renderMainMenu();
+    void renderMazeGame();
+    void renderVictoryScreen();
+    void handleInput();
+    void cleanup();
 
-class Presentation{
+public:
+    bool run();
 };
-
-
-#endif //CYBERMAZE26_27_PRESENTATION_H
