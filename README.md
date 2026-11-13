@@ -1,5 +1,10 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:6C5CE7,100:00CEC9&height=240&section=header&text=PROJECT%20NAME&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Your%20slogan%20goes%20here&descSize=22&descAlignY=58&animation=fadeIn" alt="Banner"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:6C5CE7,100:00CEC9&height=240&section=header&text=CyberMaze&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Your%20slogan%20goes%20here&descSize=22&descAlignY=58&animation=fadeIn" alt="Banner"/>
+</p>
+
+
+<p align="center">
+  <img src="" alt="Logo" width="180" height="180">
 </p>
 
 <p align="center">
@@ -58,7 +63,7 @@
 <a name="repo"></a>
 ## 🔗 Repository
 
-- 🌐 GitHub – git clone https://github.com/iglapchev24/CyberMaze26-27.git
+- 🌐 GitHub – [CyberMaze26-27](https://github.com/iglapchev24/CyberMaze26-27)
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:6C5CE7,100:00CEC9&height=3&section=header" width="100%" alt=""/>
 
@@ -73,7 +78,10 @@
 <a name="install"></a>
 ## ⚙️ Installation & Setup
 
-1️⃣ 
+1️⃣ Clone the repository:
+```sh
+git clone https://github.com/iglapchev24/CyberMaze26-27.git
+```
 
 2️⃣ 
 
@@ -87,31 +95,40 @@
 <table>
   <tr>
     <td width="220"><strong>🛠️ Tools</strong></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><strong>👨‍💻 Languages</strong></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><strong>🕹️ Frameworks & Libraries</strong></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><strong>🗄️ Database</strong></td>
-    <td></td>
+    <td>
+      <img src="<img width="463" height="431" alt="Teams" src="https://github.com/user-attachments/assets/35c075b2-efa7-49c6-b0df-f44da6e00108" />
+" alt="" width="60" height="60">
+      
+      
+    </td>
   </tr>
   <tr>
     <td><strong>🌐 Version Control</strong></td>
-    <td></td>
+    <td>
+      <img src="<img width="447" height="447" alt="GitHub" src="https://github.com/user-attachments/assets/4d7d8d62-0bd5-4ace-8e02-31d3a98e2169" />
+" alt="" width="60" height="60">
+      
+      
+    </td>
   </tr>
   <tr>
     <td><strong>💬 Communication</strong></td>
-    <td></td>
+    <td>
+      <img src="<img width="463" height="431" alt="Teams" src="https://github.com/user-attachments/assets/7cc7b192-2ae2-4dbf-a107-3f2ef32feae0" />
+" alt="" width="60" height="60">
+      
+      
+    </td>
   </tr>
   <tr>
     <td><strong>📄 Documentation</strong></td>
-    <td></td>
+    <td>
+      <img src="<img width="440" height="454" alt="Word" src="https://github.com/user-attachments/assets/04264ec1-7e60-40db-bbc3-da3feef4f182" />
+" alt="" width="60" height="60">
+      <img src="<img width="463" height="431" alt="Powerpoint" src="https://github.com/user-attachments/assets/d7658ff8-447b-49cf-81d8-ea447573ad9b" />
+" alt="" width="60" height="60">
+      
+    </td>
   </tr>
 </table>
 
