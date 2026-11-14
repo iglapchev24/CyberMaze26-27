@@ -5,6 +5,8 @@ add_executable(PresentationLayer
         main.cpp
         Presentation.h
         Presentation.cpp
+        MazeView.cpp
+        UiWidgets.cpp
 )
 
 target_link_libraries(PresentationLayer PRIVATE ApplicationLayer DataLayer imgui)
