@@ -4,7 +4,7 @@
 
 <br/>
 
-<img src="" alt="CyberMaze Logo" width="160" height="160"/>
+<img src="https://github.com/user-attachments/assets/b48ae48b-28b6-4a14-a5d1-ff88701d38a3" alt="CyberMaze Logo" width="400" height="400" style="image-rendering: pixelated; image-rendering: crisp-edges;" />
 
 <br/><br/>
 
