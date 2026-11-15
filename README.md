@@ -194,7 +194,7 @@ The tools behind CyberMaze.
 <td align="center">
 
 <img src="https://github.com/user-attachments/assets/9cbd2bce-ae06-4ec6-8654-09796e7f261a" alt="Visual Studio" width="60" height="60"/>
-
+<img src="https://github.com/user-attachments/assets/8b72cd73-d8b5-4a40-94ad-11c0b9c3cef6" alt="CMake" width="60" height="60" style="image-rendering: pixelated; image-rendering: crisp-edges;" />
 </td>
 </tr>
 <tr>
