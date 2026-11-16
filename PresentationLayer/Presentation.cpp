@@ -360,7 +360,7 @@ void ApplicationWindow::renderHud(float availableWidth) {
 
 void ApplicationWindow::renderVictoryPanel(ImVec2 boardOrigin, float boardPixels) {
     float panelWidth = min(540.0f, boardPixels - 20.0f);
-    float panelHeight = 270.0f;
+    float panelHeight = 120.0f;
     ImVec2 panelMin(boardOrigin.x + (boardPixels - panelWidth) * 0.5f, boardOrigin.y + (boardPixels - panelHeight) * 0.5f);
     ImVec2 panelMax(panelMin.x + panelWidth, panelMin.y + panelHeight);
 
@@ -382,17 +382,6 @@ void ApplicationWindow::renderVictoryPanel(ImVec2 boardOrigin, float boardPixels
         UiWidgets::drawScaledText("NEW HIGH SCORE!", 1.4f, Theme::HighScoreColor, true, panelWidth);
     } else {
         UiWidgets::drawScaledText("try again for a lower score", 1.0f, Theme::TextDim, true, panelWidth);
-    }
-
-    float gap = ImGui::GetStyle().ItemSpacing.x;
-    float buttonWidth = (panelWidth - 48.0f - gap) * 0.5f;
-    ImGui::SetCursorScreenPos(ImVec2(panelMin.x + 24.0f, panelMax.y - 62.0f));
-    if (UiWidgets::glowButton("REPLAY", ImVec2(buttonWidth, 46), Theme::ReplayButtonColor)) {
-        gameEngine.replayCurrentMaze();
-    }
-    ImGui::SameLine();
-    if (UiWidgets::glowButton("NEW MAZE", ImVec2(buttonWidth, 46), Theme::NewMazeButtonColor)) {
-        gameEngine.generateNewMaze();
     }
 }
 
