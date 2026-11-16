@@ -127,7 +127,7 @@ Explore our project materials.
 
 📄 Project Documentation
 
-View Documentation →
+<a href="https://codingburgas-my.sharepoint.com/:w:/g/personal/aiivanov24_codingburgas_bg/IQCTN-hC44rERYa1qNTpTX_MAR9x0GIX1ZJrEhisOV3ECa8?e=bxrB9l">View Documentation →
 
 <br/>
 
@@ -135,7 +135,7 @@ View Documentation →
 
 📊 Project Presentation
 
-View Presentation →
+<a href="https://codingburgas-my.sharepoint.com/:p:/g/personal/aiivanov24_codingburgas_bg/IQAvYWAl-MYqSYcBITl15Ho7Af49gEsAzInt4cMmMveQ7hE?e=phXVed">View Presentation → </a>
 
 <br/><br/>
 
