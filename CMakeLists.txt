@@ -21,6 +21,9 @@ add_library(imgui STATIC
         # If we use GLFW + OpenGL3 backend:
         external/imgui/backends/imgui_impl_glfw.cpp
         external/imgui/backends/imgui_impl_opengl3.cpp
+        PresentationLayer/main.cpp
+        PresentationLayer/main.cpp
+        PresentationLayer/main.cpp
 )
 
 target_include_directories(imgui PUBLIC
