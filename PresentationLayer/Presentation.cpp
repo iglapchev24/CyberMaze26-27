@@ -1,5 +1,6 @@
 #include "Presentation.h"
 #include "MazeView.h"
+#include "FirstPersonView.h"
 #include "Theme.h"
 #include "UiWidgets.h"
 #include <imgui.h>
@@ -91,7 +92,48 @@ void ApplicationWindow::performMove(int keyMask, double nowSeconds) {
     }
 }
 
+// The camera only changes how we look around: the real player always moves on
+// the original game grid, so score, blocked moves and victory remain unchanged.
+void ApplicationWindow::resetFirstPersonCamera() {
+    firstPersonAngle = 0.0f; // face east from the top-left start
+    firstPersonLastStep = 0.0;
+    firstPersonLastTurn = 0.0;
+}
+
+void ApplicationWindow::handleFirstPersonInput() {
+    if (gameEngine.getCurrentState() != GameState::Playing || !isBoardInView || ImGui::GetIO().WantTextInput) return;
+    const double now = glfwGetTime();
+    const float TURN_STEP = 3.14159265358979323846f / 12.0f;
+    const bool left = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS;
+    const bool right = glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS;
+    if (now - firstPersonLastTurn >= 0.085) {
+        if (left != right) {
+            firstPersonAngle += right ? TURN_STEP : -TURN_STEP;
+            firstPersonLastTurn = now;
+        }
+    }
+    const bool forward = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS;
+    const bool backward = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS;
+    if (forward != backward && now - firstPersonLastStep >= 0.18) {
+        // Grid-aligned steps: nearest of the four cardinal directions.
+        const float direction = firstPersonAngle + (backward ? 3.14159265358979323846f : 0.0f);
+        const float cosine = cosf(direction);
+        const float sine = sinf(direction);
+        const int rowStep = fabsf(sine) > fabsf(cosine) ? (sine > 0 ? 1 : -1) : 0;
+        const int colStep = rowStep == 0 ? (cosine > 0 ? 1 : -1) : 0;
+        if (gameEngine.movePlayer(rowStep, colStep) == MoveResult::Rejected)
+            blockedFlashUntil = now + 0.35;
+        firstPersonLastStep = now;
+    }
+}
+
 void ApplicationWindow::handleInput() {
+    if (firstPersonMode) {
+        inputPhase = InputPhase::Idle;
+        handleFirstPersonInput();
+        return;
+    }
+
     bool inputAllowed = gameEngine.getCurrentState() == GameState::Playing &&
                         isBoardInView && !ImGui::GetIO().WantTextInput;
     if (!inputAllowed) {
@@ -280,15 +322,18 @@ void ApplicationWindow::renderMenuSection(float availableWidth, float viewportHe
 
     if (UiWidgets::glowButton(isResume ? "RESUME GAME" : "START GAME", ImVec2(columnWidth, 58), Theme::StartButtonColor)) {
         gameEngine.startGame();
+        resetFirstPersonCamera();
         scrollToGameRequested = true;
     }
     if (UiWidgets::glowButton("REPLAY CURRENT MAZE", ImVec2(halfWidth, 46), Theme::ReplayButtonColor, hasPlayedMaze)) {
         gameEngine.replayCurrentMaze();
+        resetFirstPersonCamera();
         scrollToGameRequested = true;
     }
     ImGui::SameLine();
     if (UiWidgets::glowButton("GENERATE NEW MAZE", ImVec2(halfWidth, 46), Theme::NewMazeButtonColor)) {
         gameEngine.generateNewMaze();
+        resetFirstPersonCamera();
         scrollToGameRequested = true;
     }
 
@@ -336,10 +381,12 @@ void ApplicationWindow::renderHud(float availableWidth) {
     ImGui::SetCursorPosX(max(ImGui::GetCursorPosX(), rightEdge - 3 * buttonWidth - 2 * ImGui::GetStyle().ItemSpacing.x));
     if (UiWidgets::glowButton("REPLAY", ImVec2(buttonWidth, chipHeight), Theme::ReplayButtonColor)) {
         gameEngine.replayCurrentMaze();
+        resetFirstPersonCamera();
     }
     ImGui::SameLine();
     if (UiWidgets::glowButton("NEW MAZE", ImVec2(buttonWidth, chipHeight), Theme::NewMazeButtonColor)) {
         gameEngine.generateNewMaze();
+        resetFirstPersonCamera();
     }
     ImGui::SameLine();
     if (UiWidgets::glowButton("^ MENU", ImVec2(buttonWidth, chipHeight), Theme::TextDim)) {
@@ -352,6 +399,17 @@ void ApplicationWindow::renderHud(float availableWidth) {
     ImGui::SameLine(); ImGui::TextColored(Theme::DoorCellColor, "amber = door (shortcut)");
     ImGui::SameLine(); ImGui::TextColored(Theme::PlayerColor, "cyan = you");
     ImGui::SameLine(); ImGui::TextColored(Theme::TextDim, "|  arrows: move   2 arrows together: diagonal");
+    // Switch 2D/3D without generating a new maze or resetting the score.
+    // The view button has its own ID to avoid collisions with other controls.
+    if (UiWidgets::glowButton(firstPersonMode ? "2D MAP##ModeSwitch" : "3D FIRST PERSON##ModeSwitch",
+                              ImVec2(205, 34), Theme::CurrentScoreColor)) {
+        firstPersonMode = !firstPersonMode;
+        inputPhase = InputPhase::Idle;
+    }
+    ImGui::SameLine();
+    ImGui::TextColored(Theme::TextDim, firstPersonMode
+        ? "W/S or UP/DOWN: step   A/D or LEFT/RIGHT: turn   |  same maze and score"
+        : "3D camera available - use the button on the left");
     if (glfwGetTime() < blockedFlashUntil) {
         ImGui::SameLine();
         ImGui::TextColored(Theme::DangerColor, "  BLOCKED!");
@@ -407,10 +465,23 @@ void ApplicationWindow::renderGameSection(float availableWidth, float viewportHe
     float boardTopInWindow = gameSectionTop + hudHeight;
     ImVec2 boardOrigin(windowPosition.x + boardLeft, windowPosition.y + boardTopInWindow - ImGui::GetScrollY());
 
-    MazeView::draw(gameEngine, ImGui::GetWindowDrawList(), boardOrigin, cellSize, timeSeconds);
-
-    if (gameEngine.getCurrentState() == GameState::Victory) {
-        renderVictoryPanel(boardOrigin, boardPixels);
+    if (firstPersonMode) {
+        // Fill the available screen area with the raycast camera.
+        const float viewLeft = sideMargin;
+        const float viewTop = gameSectionTop + hudHeight + 14.0f;
+        ImVec2 viewOrigin(windowPosition.x + viewLeft,
+                          windowPosition.y + viewTop - ImGui::GetScrollY());
+        ImVec2 viewSize(boardAreaWidth, max(160.0f, boardAreaHeight - 14.0f));
+        FirstPersonView::draw(gameEngine, ImGui::GetWindowDrawList(), viewOrigin, viewSize, firstPersonAngle);
+        if (gameEngine.getCurrentState() == GameState::Victory) {
+            renderVictoryPanel(ImVec2(viewOrigin.x + (viewSize.x - min(viewSize.x, 640.0f)) * 0.5f,
+                                      viewOrigin.y + (viewSize.y - min(viewSize.y, 500.0f)) * 0.5f),
+                               min(viewSize.x, 640.0f));
+        }
+    } else {
+        MazeView::draw(gameEngine, ImGui::GetWindowDrawList(), boardOrigin, cellSize, timeSeconds);
+        if (gameEngine.getCurrentState() == GameState::Victory)
+            renderVictoryPanel(boardOrigin, boardPixels);
     }
 }
 

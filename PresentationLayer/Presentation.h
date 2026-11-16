@@ -21,6 +21,14 @@ private:
     GLFWwindow* window = nullptr;
     GameEngine gameEngine;
 
+    // First-person mode shares the same GameEngine position, score and collisions.
+    bool firstPersonMode = false;
+    float firstPersonAngle = 0.0f;       // 0=east, pi/2=south
+    double firstPersonLastStep = 0.0;
+    double firstPersonLastTurn = 0.0;
+    void resetFirstPersonCamera();
+    void handleFirstPersonInput();
+
     // ---- layout / scrolling ----
     float menuContentHeight = 700.0f;   // measured every frame, used to centre the menu
     float gameSectionTop = 0.0f;        // Y where the game section starts (below the menu)

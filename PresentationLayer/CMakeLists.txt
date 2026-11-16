@@ -5,6 +5,7 @@ add_executable(PresentationLayer
         main.cpp
         Presentation.h
         Presentation.cpp
+        FirstPersonView.cpp
         MazeView.cpp
         UiWidgets.cpp
 )
